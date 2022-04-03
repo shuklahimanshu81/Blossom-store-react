@@ -1,0 +1,17 @@
+.products-section{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap:5%;
+    padding: 0.5rem;
+}  
+.card-section{
+    border: 2.5px solid var(--black);
+    box-shadow: none;
+    margin-bottom: 1rem;
+    border-radius: var(--border-radius-l);
+
+}
+.card-btn{
+    width: fit-content;
+}
