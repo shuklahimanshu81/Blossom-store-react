@@ -1,12 +1,15 @@
 import logo from '../../Assets/Images/store-logo.png'
 import { FaRegHeart,FaShoppingCart } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
+
+
 const Header = () => {
     return( 
 <nav className="nav-component">
       <div>
-          <a href="/"><img src={logo}
+          <Link to={"/"}><img src={logo}
             alt="Blossom" className="logo-img" />
-          </a>
+          </Link>
       </div>
       <div className="nav-center">
         <input className="search-bar" type="text" placeholder="Search Here..." />
@@ -20,14 +23,14 @@ const Header = () => {
         <button className="secondary-btn btn">Sign Up</button>
        </li>
        <li className="list-item flex">
-         <a className="item" href="/">
+         <Link className="item" to={"/"}>
            <FaShoppingCart />
-         </a>
+         </Link>
        </li>
        <li className="flex">
-          <a className="item" href="/">
+          <Link className="item" to={"/"}>
             <FaRegHeart />
-          </a>
+          </Link>
        </li>
      </ul>
    </div>
