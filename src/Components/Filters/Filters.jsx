@@ -15,7 +15,7 @@ const Filters = () => {
     <div className="pricing-filter">
         <p className="filter-type"> Price(in ₹) </p>
         <label className="pricing-filter-labels">
-        <input className='pricing-filter-input' type="range" step={5000} min={0} max={20000} value={5000}/>
+        <input className='pricing-filter-input' type="range" step={5000} min={0} max={20000}/>
         <div>
             <span>0</span>
             <span>5k</span>
