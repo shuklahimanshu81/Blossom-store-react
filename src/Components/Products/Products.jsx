@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+import Filters from "../Filters/Filters";
 
 //CSS
 import './Products.css'
@@ -21,6 +22,7 @@ const Products = () => {
 
 
 return <div className="products-page">
+  <Filters />
 <section className="products-section">
     {
       productList.map( product =>{
