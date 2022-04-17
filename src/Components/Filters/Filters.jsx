@@ -1,15 +1,17 @@
 import { FaStar } from 'react-icons/fa';
-
 import './Filters.css'
+import { useProduct } from '../../Context/filterContext';
 
 const Filters = () => {
-    return <div className="filters-div">
+   const {dispatch} = useProduct();
 
+
+    return <div className="filters-div">
     <div className="sorting-by-price-filter">
         <p className="filter-type"> Sort By </p>
     <ul class="radio-type">
-        <li> <input type="radio" name='sorting' /> Low to High  </li>
-        <li> <input type="radio" name='sorting' /> High to Low  </li>
+        <li> <input type="radio" name='sorting' value='LOW_TO_HIGH' onChange={(e) => dispatch({type:"sort",payload: 'LOW_TO_HIGH'})}/> Low to High  </li>
+        <li> <input type="radio" name='sorting' value='HIGH_TO_LOW' onChange={(e) => dispatch({type:"sort",payload: 'HIGH_TO_LOW'})}/> High to Low  </li>
     </ul>
     </div>
     <div className="pricing-filter">
@@ -28,17 +30,17 @@ const Filters = () => {
     <div className="rating-filter">
         <p className="filter-type"> Rating </p>
     <ul class="checkbox-type">
-        <li> <input type="checkbox" /> 4 <FaStar/> and above  </li>
-        <li> <input type="checkbox" /> 3 <FaStar/> and above  </li>
-        <li> <input type="checkbox" /> 2 <FaStar/> and above  </li>
+        <li> <input type="checkbox"  onChange={(e) => dispatch({type:"rating",payload: '4'})}/> 4 <FaStar/> and above  </li>
+        <li> <input type="checkbox" onChange={(e) => dispatch({type:"rating",payload: '3'})} /> 3 <FaStar/> and above  </li>
+        <li> <input type="checkbox" onChange={(e) => dispatch({type:"rating",payload: '2'})} /> 2 <FaStar/> and above  </li>
     </ul>
     </div>
     <div className="product-type-filter">
         <p className="filter-type"> Category </p>
     <ul class="checkbox-type">
-        <li> <input type="checkbox" /> Guitars </li>
-        <li> <input type="checkbox" /> Drums </li>
-        <li> <input type="checkbox" /> Flutes </li>
+        <li> <input type="checkbox" onClick={(e) => dispatch({type:"category",payload: 'trumpet'})} /> Trumpets </li>
+        <li> <input type="checkbox" onClick={(e) => dispatch({type:"category",payload: 'drums'})} /> Drums </li>
+        <li> <input type="checkbox" onClick={(e) => dispatch({type:"category",payload: 'flutes'})} /> Flutes </li>
     </ul>
     </div>
     </div>
