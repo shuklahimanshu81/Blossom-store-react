@@ -64,3 +64,17 @@
     font-size: calc(var(--text-size-m) - 4px);
     margin: 8px;
 }
+.wishlist-count,.cart-count{
+    font-size: var(--text-size-m);
+    height: 1.75rem;
+    width: 1.75rem;
+    border-radius: var(--border-radius-f);
+    background-color: var(--primary-btn-color);
+    margin-left: -1rem;
+    text-align: center;
+}
+
+svg{
+    height:1.5em;
+    width: 1.5em;
+}
