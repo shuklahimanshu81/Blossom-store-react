@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { categories } from "../../backend/db/categories";
 
 
@@ -5,7 +6,7 @@ const Landing = () => {
     return <div className="landing-screen flex">
         <div className="hero-div">
             <img src={'https://urlty.co/dOP'} alt="" className="hero-img" />
-             <a href="/" className="primary-btn btn explore-btn"> Explore </a>
+             <Link to={'/products'} className="primary-btn btn explore-btn"> Explore </Link>
         </div>
         <h1 className="category-heading"> Shop category wise here.... </h1>
         <div className="category-div">
