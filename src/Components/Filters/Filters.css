@@ -1,8 +1,13 @@
+.filter-reset{
+    color:var(--primary-color)
+}
+.filters-head{
+    display: flex;
+    justify-content: space-between;
+}
 .filters-div{
     flex-shrink: 0;
     height: 100%;
-    position: sticky;
-    top: 0;
     width: 10rem;
     padding: 0.75rem;
 }

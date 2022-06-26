@@ -1,65 +1,98 @@
-import {useContext,useState, useEffect, createContext, useReducer} from 'react'
-
-
-import axios from 'axios';
+import { useContext, createContext, useReducer } from "react";
+import { useDbData } from "./dbDataContext";
 
 const filterContext = createContext();
-const useProduct = () => useContext(filterContext)
 
-const FilterProvider = ({children}) =>{
-    const [productList, setProductList] = useState([])
-    useEffect(() => {
-       
-        (async () => {
-        try {
-              const res = await axios.get("/api/products");
-              setProductList(res.data.products);
-        } catch (error) {
-              console.log(error);
+const useProduct = () => useContext(filterContext);
+
+const FilterProvider = ({ children }) => {
+  const { dbDataState } = useDbData();
+
+  const filterReducer = (filterState, filters) => {
+    switch (filters.type) {
+      case "SORT_BY":
+        return { ...filterState, SORT_BY: filters.payload };
+      case "RATING":
+        return { ...filterState, RATING: filters.payload };
+      case "CATEGORY":
+        if (filters.payload.checked) {
+          return filterState.CATEGORY.indexOf(filters.payload.value) >= 0
+            ? filterState
+            : {
+              ...filterState,
+              CATEGORY: [...filterState.CATEGORY, filters.payload.value],
+            };
+        } else {
+          return {
+            ...filterState,
+            CATEGORY: filterState.CATEGORY.filter(
+              (item) => item !== filters.payload.value
+            ),
+          };
         }
-      })();
-    }, [])
+      case "PRICE": console.log({ ...filterState, PRICE: filters.payload }); return { ...filterState, PRICE: filters.payload }
+      case "RESET": return {
+        SORT_BY: "",
+        RATING: 0,
+        CATEGORY: [],
+      }
 
-    const reducerFunc = (state,action) => {
-        switch(action.type){
-            case "sort" : if(action.payload === 'LOW_TO_HIGH')
-                           return action;
-                          else if(action.payload === 'HIGH_TO_LOW') return action;
-                          else return state;
-
-            case "category" : if(action.payload === 'trumpets')return action;
-                              else if(action.payload === 'drums')return action;
-                              else if(action.payload === 'flutes')return action;
-                              else return state;
-            case "rating" : if(action.payload === '4')return {...state,payload: action.payload}
-                            else if(action.payload === '3')return action;
-                            else if(action.payload === '2')return action;
-                            else return state;
-            
-        }
+      default:
+        return filterState;
     }
-    const [state,dispatch] = useReducer(reducerFunc,{type:'sort',payload:''})
-   const getFinalProduct = (state,data) => {
-       switch(state.type){
-           case 'sort' :if(state.payload === 'LOW_TO_HIGH') return data.sort((a,b) => Number(a["price"]) - Number(b["price"]))
-                        else if(state.payload === 'HIGH_TO_LOW') return data.sort((a,b) => Number(b["price"]) - Number(a["price"]))
-                        else return data; 
-           case 'category' : if(state.payload === 'drums')return data.filter(item => item.categoryName === 'drums');
-                             else if(state.payload === 'trumpet')return data.filter(item => item.categoryName === 'trumpet');
-                             else if(state.payload === 'flutes')return data.filter(item => item.categoryName === 'flutes');
-                             else return data;
-           default  : return data
-       }
-       
-   }
+  };
 
-   let finalProduct = getFinalProduct(state,[...productList])
-    
-    
-        return <filterContext.Provider value={{ finalProduct,state,dispatch ,productList}}>
-        {children}
+  const [filterState, filterDispatch] = useReducer(filterReducer, {
+    SORT_BY: "",
+    RATING: 0,
+    CATEGORY: [],
+    PRICE: 4000
+  });
+
+  const getSortedProduct = (products, sortType) => {
+    switch (sortType) {
+      case "LOW_TO_HIGH":
+        return products.sort((a, b) => a.price - b.price);
+      case "HIGH_TO_LOW":
+        return products.sort((a, b) => b.price - a.price);
+      default:
+        return products;
+    }
+  };
+
+  const getFilteredProduct = (sortedProductList, filters) => {
+    let finalProductList = filters.CATEGORY.length
+      ? []
+      : [...sortedProductList];
+
+    filters.CATEGORY.forEach((category) => {
+      finalProductList = [...finalProductList, ...[...sortedProductList].filter(
+        (item) => item.categoryName === category
+      )]
+    });
+
+    if (filters.RATING) {
+      finalProductList = finalProductList.filter(
+        (item) => item.rating >= filters.RATING
+      );
+    }
+    if (filters.PRICE) {
+      finalProductList = finalProductList.filter((item) => Number(item.price) >= filters.PRICE)
+    }
+    return finalProductList;
+  };
+
+  const filteredProduct = getFilteredProduct(dbDataState.products, filterState);
+  const sortedProduct = getSortedProduct(
+    filteredProduct,
+    filterState.SORT_BY
+  );
+
+  return (
+    <filterContext.Provider value={{ sortedProduct, filterDispatch, filterState }}>
+      {children}
     </filterContext.Provider>
-    
-}
-    
-export {FilterProvider,useProduct}
+  );
+};
+
+export { FilterProvider, useProduct };
