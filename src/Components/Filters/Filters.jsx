@@ -7,13 +7,19 @@ const Filters = () => {
 
   return (
     <div className="filters-div">
-
       <div className="sorting-by-price-filter">
-        <p className="filters-head"><span className="filter-type">Filters</span><span className="filter-reset filter-type" onClick={() => filterDispatch({ type: 'RESET' })}>Clear All</span></p>
+        <p className="filters-head">
+          <span className="filter-type">Filters</span>
+          <span
+            className="filter-reset filter-type"
+            onClick={() => filterDispatch({ type: "RESET" })}
+          >
+            Clear All
+          </span>
+        </p>
         <p className="filter-type"> Sort By </p>
         <ul class="radio-type">
           <li>
-
             <input
               type="radio"
               name="sorting"
@@ -26,7 +32,6 @@ const Filters = () => {
             Low to High
           </li>
           <li>
-
             <input
               type="radio"
               name="sorting"
@@ -47,7 +52,9 @@ const Filters = () => {
             className="pricing-filter-input"
             type="range"
             value={filterState.PRICE}
-            onChange={(e) => filterDispatch({ type: "PRICE", payload: e.target.value })}
+            onChange={(e) =>
+              filterDispatch({ type: "PRICE", payload: e.target.value })
+            }
             step={2000}
             min={0}
             max={10000}
@@ -66,32 +73,29 @@ const Filters = () => {
         <p className="filter-type"> Rating </p>
         <ul class="checkbox-type">
           <li>
-
             <input
               name="rating"
               type="radio"
               checked={filterState.RATING === "4"}
-              onChange={() => filterDispatch({ type: 'RATING', payload: "4" })}
+              onChange={() => filterDispatch({ type: "RATING", payload: "4" })}
             />
             4 <FaStar /> and above
           </li>
           <li>
-
             <input
               name="rating"
               type="radio"
               checked={filterState.RATING === "3"}
-              onChange={() => filterDispatch({ type: 'RATING', payload: "3" })}
+              onChange={() => filterDispatch({ type: "RATING", payload: "3" })}
             />
             3 <FaStar /> and above
           </li>
           <li>
-
             <input
               name="rating"
               type="radio"
               checked={filterState.RATING === "2"}
-              onChange={() => filterDispatch({ type: 'RATING', payload: "2" })}
+              onChange={() => filterDispatch({ type: "RATING", payload: "2" })}
             />
             2 <FaStar /> and above
           </li>
@@ -101,29 +105,41 @@ const Filters = () => {
         <p className="filter-type"> Category </p>
         <ul class="checkbox-type">
           <li>
-
             <input
               type="checkbox"
               checked={filterState.CATEGORY.indexOf("trumpet") >= 0}
-              onChange={(e) => filterDispatch({ type: 'CATEGORY', payload: { checked: e.target.checked, value: 'trumpet' } })}
+              onChange={(e) =>
+                filterDispatch({
+                  type: "CATEGORY",
+                  payload: { checked: e.target.checked, value: "trumpet" },
+                })
+              }
             />
             Trumpets
           </li>
           <li>
-
             <input
               type="checkbox"
               checked={filterState.CATEGORY.indexOf("drum") >= 0}
-              onChange={(e) => filterDispatch({ type: 'CATEGORY', payload: { checked: e.target.checked, value: "drum" } })}
+              onChange={(e) =>
+                filterDispatch({
+                  type: "CATEGORY",
+                  payload: { checked: e.target.checked, value: "drum" },
+                })
+              }
             />
             Drums
           </li>
           <li>
-
             <input
               type="checkbox"
               checked={filterState.CATEGORY.indexOf("flute") >= 0}
-              onChange={(e) => filterDispatch({ type: 'CATEGORY', payload: { checked: e.target.checked, value: 'flute' } })}
+              onChange={(e) =>
+                filterDispatch({
+                  type: "CATEGORY",
+                  payload: { checked: e.target.checked, value: "flute" },
+                })
+              }
             />
             Flutes
           </li>
