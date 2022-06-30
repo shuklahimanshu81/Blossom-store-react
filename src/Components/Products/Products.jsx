@@ -1,6 +1,8 @@
+import { useNavigate } from "react-router-dom";
 import { useCart } from "../../Context/cartContext";
 import { useProduct } from "../../Context/filterContext";
 import { useWishlist } from "../../Context/wishlistContext";
+
 import Filters from "../Filters/Filters";
 
 //CSS
@@ -8,9 +10,26 @@ import "./Products.css";
 
 const Products = () => {
   const { sortedProduct } = useProduct();
-  const { cartDispatch } = useCart();
-  const { wishlistDispatch } = useWishlist();
+  const { cartDispatch, cartState } = useCart();
+  const { wishlistDispatch, wishlistState } = useWishlist();
+  const navigate = useNavigate();
 
+  const cartHandler = (product) => {
+    cartState.cart.findIndex((item) => item._id === product._id) >= 0
+      ? navigate("/cart")
+      : cartDispatch({
+          type: "ADD_TO_CART",
+          payload: product,
+        });
+  };
+  const wishlistHandler = (product) => {
+    wishlistState.wishlist.findIndex((item) => item._id === product._id) >= 0
+      ? navigate("/wishlist")
+      : wishlistDispatch({
+          type: "ADD_TO_WISHLIST",
+          payload: product,
+        });
+  };
   return (
     <div className="products-page">
       <Filters />
@@ -29,26 +48,27 @@ const Products = () => {
                   />
                 </div>
                 <div className="card-heading">{product.title}</div>
-                <div className="card-detail">{product.price} </div>
+                <div className="card-detail"> ₹ {product.price} </div>
                 <div className="card-btns">
                   <button
                     className="card-primary-btn card-btn"
-                    onClick={() =>
-                      cartDispatch({ type: "ADD_TO_CART", payload: product })
-                    }
+                    onClick={() => cartHandler(product)}
                   >
-                    Add to cart
+                    {cartState.cart.findIndex(
+                      (item) => item._id === product._id
+                    ) >= 0
+                      ? "Go to cart"
+                      : "Add to cart"}
                   </button>
                   <button
                     className="card-secondary-btn card-btn"
-                    onClick={() =>
-                      wishlistDispatch({
-                        type: "ADD_TO_WISHLIST",
-                        payload: product,
-                      })
-                    }
+                    onClick={() => wishlistHandler(product)}
                   >
-                    Add to wishlist
+                    {wishlistState.wishlist.findIndex(
+                      (item) => item._id === product._id
+                    ) >= 0
+                      ? "Go to wishlist"
+                      : "Add to wishlist"}
                   </button>
                 </div>
               </div>

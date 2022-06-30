@@ -5,7 +5,7 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap:5%;
+    gap:2.5%;
     padding: 0.5rem;
 }  
 .card-section{
@@ -14,6 +14,9 @@
     margin-bottom: 1rem;
     border-radius: var(--border-radius-l);
 
+}
+.card-img-section{
+    justify-content: start;
 }
 .card-btn{
     width: fit-content;
