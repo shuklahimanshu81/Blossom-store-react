@@ -19,9 +19,9 @@ const FilterProvider = ({ children }) => {
           return filterState.CATEGORY.indexOf(filters.payload.value) >= 0
             ? filterState
             : {
-              ...filterState,
-              CATEGORY: [...filterState.CATEGORY, filters.payload.value],
-            };
+                ...filterState,
+                CATEGORY: [...filterState.CATEGORY, filters.payload.value],
+              };
         } else {
           return {
             ...filterState,
@@ -30,12 +30,16 @@ const FilterProvider = ({ children }) => {
             ),
           };
         }
-      case "PRICE": console.log({ ...filterState, PRICE: filters.payload }); return { ...filterState, PRICE: filters.payload }
-      case "RESET": return {
-        SORT_BY: "",
-        RATING: 0,
-        CATEGORY: [],
-      }
+      case "PRICE":
+        console.log({ ...filterState, PRICE: filters.payload });
+        return { ...filterState, PRICE: filters.payload };
+      case "RESET":
+        return {
+          SORT_BY: "",
+          RATING: 0,
+          CATEGORY: [],
+          PRICE: 4000,
+        };
 
       default:
         return filterState;
@@ -46,7 +50,7 @@ const FilterProvider = ({ children }) => {
     SORT_BY: "",
     RATING: 0,
     CATEGORY: [],
-    PRICE: 4000
+    PRICE: 4000,
   });
 
   const getSortedProduct = (products, sortType) => {
@@ -66,9 +70,12 @@ const FilterProvider = ({ children }) => {
       : [...sortedProductList];
 
     filters.CATEGORY.forEach((category) => {
-      finalProductList = [...finalProductList, ...[...sortedProductList].filter(
-        (item) => item.categoryName === category
-      )]
+      finalProductList = [
+        ...finalProductList,
+        ...[...sortedProductList].filter(
+          (item) => item.categoryName === category
+        ),
+      ];
     });
 
     if (filters.RATING) {
@@ -77,19 +84,20 @@ const FilterProvider = ({ children }) => {
       );
     }
     if (filters.PRICE) {
-      finalProductList = finalProductList.filter((item) => Number(item.price) >= filters.PRICE)
+      finalProductList = finalProductList.filter(
+        (item) => Number(item.price) >= filters.PRICE
+      );
     }
     return finalProductList;
   };
 
   const filteredProduct = getFilteredProduct(dbDataState.products, filterState);
-  const sortedProduct = getSortedProduct(
-    filteredProduct,
-    filterState.SORT_BY
-  );
+  const sortedProduct = getSortedProduct(filteredProduct, filterState.SORT_BY);
 
   return (
-    <filterContext.Provider value={{ sortedProduct, filterDispatch, filterState }}>
+    <filterContext.Provider
+      value={{ sortedProduct, filterDispatch, filterState }}
+    >
       {children}
     </filterContext.Provider>
   );
