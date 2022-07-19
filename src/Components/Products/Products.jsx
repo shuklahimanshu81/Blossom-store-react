@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../Context/authContext";
 import { useCart } from "../../Context/cartContext";
 import { useProduct } from "../../Context/filterContext";
 import { useWishlist } from "../../Context/wishlistContext";
@@ -12,6 +13,7 @@ const Products = () => {
   const { sortedProduct } = useProduct();
   const { cartDispatch, cartState } = useCart();
   const { wishlistDispatch, wishlistState } = useWishlist();
+  const { authToken } = useAuth();
   const navigate = useNavigate();
 
   const cartHandler = (product) => {
@@ -50,26 +52,44 @@ const Products = () => {
                 <div className="card-heading">{product.title}</div>
                 <div className="card-detail"> ₹ {product.price} </div>
                 <div className="card-btns">
-                  <button
-                    className="card-primary-btn card-btn"
-                    onClick={() => cartHandler(product)}
-                  >
-                    {cartState.cart.findIndex(
-                      (item) => item._id === product._id
-                    ) >= 0
-                      ? "Go to cart"
-                      : "Add to cart"}
-                  </button>
-                  <button
-                    className="card-secondary-btn card-btn"
-                    onClick={() => wishlistHandler(product)}
-                  >
-                    {wishlistState.wishlist.findIndex(
-                      (item) => item._id === product._id
-                    ) >= 0
-                      ? "Go to wishlist"
-                      : "Add to wishlist"}
-                  </button>
+                  {authToken ? (
+                    <button
+                      className="card-primary-btn card-btn"
+                      onClick={() => cartHandler(product)}
+                    >
+                      {cartState.cart.findIndex(
+                        (item) => item._id === product._id
+                      ) >= 0
+                        ? "Go to cart"
+                        : "Add to cart"}
+                    </button>
+                  ) : (
+                    <button
+                      className="card-primary-btn card-btn"
+                      onClick={() => navigate("/login")}
+                    >
+                      Add to Cart
+                    </button>
+                  )}
+                  {authToken ? (
+                    <button
+                      className="card-secondary-btn card-btn"
+                      onClick={() => wishlistHandler(product)}
+                    >
+                      {wishlistState.wishlist.findIndex(
+                        (item) => item._id === product._id
+                      ) >= 0
+                        ? "Go to wishlist"
+                        : "Add to wishlist"}
+                    </button>
+                  ) : (
+                    <button
+                      className="card-secondary-btn card-btn"
+                      onClick={() => navigate("/login")}
+                    >
+                      Add to wishlist
+                    </button>
+                  )}
                 </div>
               </div>
             );
