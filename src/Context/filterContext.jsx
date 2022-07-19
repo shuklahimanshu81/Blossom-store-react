@@ -38,7 +38,7 @@ const FilterProvider = ({ children }) => {
           SORT_BY: "",
           RATING: 0,
           CATEGORY: [],
-          PRICE: 4000,
+          PRICE: 6000,
         };
 
       default:
@@ -50,7 +50,7 @@ const FilterProvider = ({ children }) => {
     SORT_BY: "",
     RATING: 0,
     CATEGORY: [],
-    PRICE: 4000,
+    PRICE: 6000,
   });
 
   const getSortedProduct = (products, sortType) => {
@@ -85,7 +85,7 @@ const FilterProvider = ({ children }) => {
     }
     if (filters.PRICE) {
       finalProductList = finalProductList.filter(
-        (item) => Number(item.price) >= filters.PRICE
+        (item) => Number(item.price) <= filters.PRICE
       );
     }
     return finalProductList;
